@@ -7,8 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.Joker;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    Joker joker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void tellJoke(View view) {
-        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
+        if (joker == null) {
+            joker = new Joker();
+        }
+
+        // Show two toasts, one after the other, with the joke and then the answer.
+        Toast.makeText(this, joker.getJoke(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, joker.getAnswer(), Toast.LENGTH_LONG).show();
+
     }
 
 
