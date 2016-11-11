@@ -34,16 +34,14 @@ public class Joker {
      *
      * @return a joke
      */
-    public String getJoke() {
-        String joke = jokes[counter];
-        answer = answers[counter];
-
-        // Increment the joke counter or reset back to beginning
-        if (counter >= (jokes.length - 1)) {
-            counter = 0;
-        } else {
-            counter++;
+    public String getJoke(Integer count) {
+        int jokeNumber = count;
+        if (count > (jokes.length - 1)) {
+            jokeNumber = ((count + 1) % jokes.length) - 1;
         }
+
+        String joke = jokes[jokeNumber];
+        answer = answers[jokeNumber];
 
         return joke;
     }
