@@ -6,6 +6,8 @@ import android.support.v4.util.Pair;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 
+import org.junit.Test;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,9 +18,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    @org.junit.Test
+    @Test
     public void testJokeRetrieved() {
-        Log.v("testJokeRetrieved", "Start");
         String[] correctAnswer = new String[]{"What did the mathematical pirate say when his favorite bird flew away?",
                 "Polygon!"};
         String[] returnedAnswer = new String[2];
@@ -28,8 +29,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             Log.e("ApplicationTest", e.toString());
         }
 
-        assertEquals(correctAnswer,returnedAnswer);
-        Log.v("testJokeRetrieved", "Finish");
+        // Make sure the joke and answer that are returned equal the provided joke and answer strings
+        assertTrue(correctAnswer[0].equals(returnedAnswer[0]));
+        assertTrue(correctAnswer[1].equals(returnedAnswer[1]));
     }
 
 
