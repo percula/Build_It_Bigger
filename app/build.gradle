@@ -24,6 +24,15 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.android.support:support-annotations:23.0.1'
     }
+
+    productFlavors{
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+        }
+    }
 }
 
 dependencies {
@@ -31,7 +40,7 @@ dependencies {
     // Added for AdMob
     compile project(":jokedisplay")
     compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.google.android.gms:play-services-ads:9.8.0'
+    freeCompile 'com.google.android.gms:play-services-ads:9.8.0'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile project(path: ':backend', configuration: 'android-endpoints')
     testCompile 'junit:junit:4.12'

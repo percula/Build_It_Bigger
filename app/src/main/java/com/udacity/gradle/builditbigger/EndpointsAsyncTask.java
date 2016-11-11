@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -25,6 +26,25 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
     public static final String JOKE_KEY = "joke_intent_key";
     public static final String ANSWER_KEY = "answer_intent_key";
 
+    // I used help from http://stackoverflow.com/a/9170457 for this progress bar code
+    private ProgressDialog progressDialog;
+
+    // Need to get context in the constructor
+    public EndpointsAsyncTask(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(context.getString(R.string.loading));
+        progressDialog.setIndeterminate(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+    }
+
     @Override
     protected String[] doInBackground(Pair<Context, String>... params) {
         if(myApiService == null) {  // Only do this once
@@ -45,7 +65,6 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
             myApiService = builder.build();
         }
 
-        context = params[0].first;
         String countStr = params[0].second;
         String[] result = new String[2];
 
@@ -61,12 +80,13 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
 
     @Override
     protected void onPostExecute(String[] result) {
-
-
+        progressDialog.dismiss();
 
         Intent intent = new Intent(context, JokeActivity.class);
         intent.putExtra(JOKE_KEY, result[0]);
         intent.putExtra(ANSWER_KEY, result[1]);
         context.startActivity(intent);
     }
+
+
 }

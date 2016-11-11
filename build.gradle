@@ -17,3 +17,40 @@ allprojects {
         jcenter()
     }
 }
+
+// I can't seem to get this to work, despite looking at help from the Udacity forums
+// Running the task "testAll" should kick off all the sub-tasks but I get an error:
+// "Calculate task graph"
+task startBackend(dependsOn: ":backend:appengineRun") {
+    evaluationDependsOn ":backend"
+
+    project(":backend") {
+        appengine {
+            daemon true
+        }
+    }
+    doLast {
+        println "Backend Started"
+    }
+}
+
+task runTests(dependsOn: "app:verification:deviceAndroidTest") {
+    shouldRunAfter "startBackend"
+    doLast {
+        println "Tests Run"
+    }
+}
+
+task stopBackend(dependsOn: ":backend:appengine") {
+    shouldRunAfter "runTests"
+    doLast {
+        println "Backend Stopped"
+    }
+}
+
+task testAll (dependsOn: ["startBackend","runTests","stopBackend"]) {
+    doLast {
+        prtinln "Done with all!"
+    }
+}
+
