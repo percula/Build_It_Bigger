@@ -29,20 +29,27 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
     // I used help from http://stackoverflow.com/a/9170457 for this progress bar code
     private ProgressDialog progressDialog;
 
-    // Need to get context in the constructor
+    // Need to get context in the constructor for the progress dialog
     public EndpointsAsyncTask(Context context) {
         this.context = context;
+    }
+
+    // Secondary constructor for test case use, no progress dialog needed
+    public EndpointsAsyncTask() {
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getString(R.string.loading));
-        progressDialog.setIndeterminate(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(true);
-        progressDialog.show();
+        if (context != null) {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage(context.getString(R.string.loading));
+            progressDialog.setIndeterminate(false);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
     }
 
     @Override
@@ -65,6 +72,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
             myApiService = builder.build();
         }
 
+        context = params[0].first;
         String countStr = params[0].second;
         String[] result = new String[2];
 
@@ -80,7 +88,9 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String[]
 
     @Override
     protected void onPostExecute(String[] result) {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
 
         Intent intent = new Intent(context, JokeActivity.class);
         intent.putExtra(JOKE_KEY, result[0]);

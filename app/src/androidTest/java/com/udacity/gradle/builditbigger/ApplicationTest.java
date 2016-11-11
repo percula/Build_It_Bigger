@@ -24,10 +24,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
                 "Polygon!"};
         String[] returnedAnswer = new String[2];
         try {
-            // Note that the test fails because of the context that was added to add the progress
-            // dialog. Removing the context makes the test succeed again. The progress dialog requires
-            // an activity context which the application test cannot provide...
-            returnedAnswer = new EndpointsAsyncTask(getContext()).execute(new Pair<Context, String>(getContext(), "0")).get(15, TimeUnit.SECONDS);
+            returnedAnswer = new EndpointsAsyncTask().execute(new Pair<Context, String>(getContext(), "0")).get(15, TimeUnit.SECONDS);
         } catch (Exception e) {
             Log.e("ApplicationTest", e.toString());
         }
