@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.util.Pair;
 import android.test.ApplicationTestCase;
-import android.util.Log;
 
 import org.junit.Test;
 
@@ -24,9 +23,11 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
                 "Polygon!"};
         String[] returnedAnswer = new String[2];
         try {
-            returnedAnswer = new EndpointsAsyncTask().execute(new Pair<Context, String>(getContext(), "0")).get(15, TimeUnit.SECONDS);
+            EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
+            endpointsAsyncTask.execute(new Pair<Context, String>(getContext(), "0"));
+            returnedAnswer = endpointsAsyncTask.get(30, TimeUnit.SECONDS);
         } catch (Exception e) {
-            Log.e("ApplicationTest", e.toString());
+            fail("Timed Out");
         }
 
         // Make sure the joke and answer that are returned equal the provided joke and answer strings
