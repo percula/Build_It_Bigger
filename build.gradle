@@ -18,9 +18,7 @@ allprojects {
     }
 }
 
-// I can't seem to get this to work, despite looking at help from the Udacity forums
-// Running the task "testAll" should kick off all the sub-tasks but I get an error:
-// "Calculate task graph"
+
 task startBackend(dependsOn: ":backend:appengineRun") {
     evaluationDependsOn ":backend"
 
@@ -53,4 +51,7 @@ task testAll (dependsOn: ["startBackend","runTests","stopBackend"]) {
         prtinln "Done with all!"
     }
 }
+
+task runAppEngineAndTest(dependsOn: ":backend:appengineRun") { }
+runAppEngineAndTest.finalizedBy([":app:connectedCheck", ":backend:appengineStop"])
 
